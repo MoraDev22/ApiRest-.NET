@@ -1,0 +1,1 @@
+Proyecto API REST desarrollado usando arquitectura en capas, poniendo en prácticas buenas convenciones. Además, dicho proyecto, establece una conexión con el servidor de SQL Server. Interactuando directamente con entidades.
