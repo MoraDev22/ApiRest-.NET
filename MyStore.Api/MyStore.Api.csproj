@@ -7,12 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="DotNetEnv" Version="3.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.12" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\MyStore.Application\MyStore.Application.csproj" />
+    <ProjectReference Include="..\MyStore.Infrastructure\MyStore.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,11 +1,32 @@
+using DotNetEnv;
+using Microsoft.EntityFrameworkCore;
+using MyStore.Infrastructure.Repositories;
+using MyStore.Application.Interfaces;
+using MyStore.Infrastructure;
+using MyStore.Application.Services;
+
+Env.Load(
+    Path.Combine(Directory.GetCurrentDirectory(), "../.env")
+    //Result: MyStoreAPiRest/MyStore.Api/../.env = MyStoreAPiRest/.env
+);
 var builder = WebApplication.CreateBuilder(args);
+
+var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION");
+builder.Services.AddDbContext<AppDbContext>(options => 
+    options.UseSqlServer(connectionString)
+);
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<ProductService>();
+builder.Services.AddControllers();
+
 var app = builder.Build();
+app.MapControllers();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -14,7 +35,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 var summaries = new[]
 {
