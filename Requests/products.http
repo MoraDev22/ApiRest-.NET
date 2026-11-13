@@ -1,0 +1,33 @@
+@hostAddress = http://localhost:5167/api/Product
+
+### GET
+GET {{hostAddress}}
+Accept: application/json
+
+### INSERT
+POST {{hostAddress}}
+Content-Type: application/json
+
+{
+    "name": "Macbook Neon",
+    "description": "Laptop de 13 pulgadas para uso escolar y profesional",
+    "price": 12500.00,
+    "stock": 7,
+    "marca": "Apple"
+}
+
+### UPDATE
+PUT {{hostAddress}}/5002
+Content-Type: application/json
+
+{
+    "name": "Macbook Neon",
+    "description": "Laptop de 13 pulgadas para uso escolar y profesional",
+    "price": 12500.00,
+    "stock": 7,
+    "marca": "Apple"
+}
+
+### DELETE
+DELETE {{hostAddress}}/5002
+Accept: application/json

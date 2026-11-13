@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using MyStore.Application.DTOs;
 using MyStore.Application.Services;
 using MyStore.Domain.Entities;
 
@@ -33,17 +34,16 @@ namespace MyStore.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddProduct([FromBody] Product product)
+        public async Task<IActionResult> AddProduct([FromBody] ProductDto productDto)
         {
-            Product? productCreated = await _service.AddProduct(product);
-            if (productCreated == null) return BadRequest("Los datos enviados no son válidos");
-            return Ok(productCreated);
+            ProductCreateDto productCreated = await _service.AddProduct(productDto);
+            return Created("",productCreated);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateProduct([FromBody] Product newProduct, int id)
+        public async Task<IActionResult> UpdateProduct([FromBody] ProductDto newProduct, int id)
         {
-            Product? productUpdated = await _service.UpdateProduct(newProduct, id);
+            ProductDto? productUpdated = await _service.UpdateProduct(newProduct, id);
 
             if (productUpdated == null) return NotFound(
                 "El producto que deseas modificar no se encuentra registrado en la Base de Datos"
@@ -55,7 +55,7 @@ namespace MyStore.Api.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProduct(int id)
         {
-            Product? productDeleted = await _service.DeleteProduct(id);
+            ProductDto? productDeleted = await _service.DeleteProduct(id);
 
             if (productDeleted == null) return NotFound(
                 "El producto que deseas eliminar no se encuentra registrado en la Base de Datos"

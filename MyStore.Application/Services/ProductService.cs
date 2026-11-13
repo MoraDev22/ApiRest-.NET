@@ -1,5 +1,7 @@
 using MyStore.Application.Interfaces;
 using MyStore.Domain.Entities;
+using MyStore.Application.Methods;
+using MyStore.Application.DTOs;
 
 namespace MyStore.Application.Services
 {
@@ -22,27 +24,40 @@ namespace MyStore.Application.Services
             return await _repository.GetProductByID(id);
         }
 
-        public async Task<Product?> AddProduct(Product p)
+        public async Task<ProductCreateDto> AddProduct(ProductDto productDto)
         {
-            return await _repository.AddProduct(p);
+           
+            var product = new Product
+            {
+                Name = productDto.Name,
+                Description = productDto.Description,
+                Price = productDto.Price,
+                Stock = productDto.Stock,
+                Marca = productDto.Marca
+            };
+            Product newProduct = await _repository.AddProduct(product);
+
+            //SI TODO SALIO BIEN
+            return new ProductCreateDto
+            (
+                newProduct.ProductID,
+                newProduct.Name,
+                newProduct.Description,
+                newProduct.Price,
+                newProduct.Stock,
+                newProduct.Marca
+            );
+
         }
 
-        public async Task<Product?> UpdateProduct(Product newProduct, int id)
+        public async Task<ProductDto?> UpdateProduct(ProductDto newProduct, int id)
         {
-            Product? productObtained = await _repository.GetProductByID(id);
-            if (productObtained == null) return null;
-
-            await _repository.UpdateProduct(productObtained, newProduct);
-            return productObtained;
+            return await ProductMethod.ValidateProductOperations(_repository, id, "update", newProduct);
         }
 
-        public async Task<Product?> DeleteProduct(int id)
+        public async Task<ProductDto?> DeleteProduct(int id)
         {
-            Product? productObtained = await _repository.GetProductByID(id);
-            if (productObtained == null) return null;
-
-            await _repository.DeleteProduct(productObtained);
-            return productObtained;
+            return await ProductMethod.ValidateProductOperations(_repository, id, "delete");
         }
     }
 }

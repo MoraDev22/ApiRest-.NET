@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using MyStore.Application.DTOs;
 using MyStore.Application.Interfaces;
 using MyStore.Domain.Entities;
 
@@ -16,6 +17,7 @@ namespace MyStore.Infrastructure.Repositories
         public async Task<IEnumerable<Product>> GetAll()
         {
             return await _context.Products
+                .AsNoTracking()
                 .ToListAsync();
         }
 
@@ -31,7 +33,7 @@ namespace MyStore.Infrastructure.Repositories
             return p;
         }
 
-        public async Task UpdateProduct(Product p, Product newProduct)
+        public async Task UpdateProduct(Product p, ProductDto newProduct)
         {
             p.Name = newProduct.Name;
             p.Description = newProduct.Description;
